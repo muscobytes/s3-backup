@@ -18,19 +18,14 @@ help:
 login:
 	docker login $(DOCKER_REGISTRY_URL)
 
-.PHONY: build
-build:
-	docker build --file="$(shell pwd)/.docker/aws-cli/Dockerfile" --tag $(TAG) --progress=plain .
-	docker push $(TAG)
-
 .PHONY: push
 push:
 	make login
-	$(DOCKER_COMPOSE) push
+	docker push $(TAG)
 
-.PHONY: build-push
-build-push:
-	make build
+.PHONY: build
+build:
+	docker build --file="$(shell pwd)/.docker/aws-cli/Dockerfile" --tag $(TAG) --progress=plain .
 	make push
 
 .PHONY: shell
