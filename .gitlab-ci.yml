@@ -8,7 +8,7 @@ workflow:
     - docker:dind
   stage: build
   variables:
-    TAG: $CI_REGISTRY/renaissance7/backup/backup-media:latest
+    TAG: $CI_REGISTRY/renaissance7/infrastructure/backup-media:latest
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
       when: always
