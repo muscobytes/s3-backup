@@ -32,3 +32,7 @@ push:
 build-push:
 	make build
 	make push
+
+.PHONY: shell
+shell:
+	docker run --rm -ti --entrypoint=/bin/bash $(TAG)
