@@ -4,6 +4,8 @@ stages:
 
 workflow:
   image: registry.gitlab.com/renaissance7/infrastructure/docker-compose:latest
+  services:
+    - docker:dind
   stage: build
   variables:
     TAG: $CI_REGISTRY/renaissance7/backup/backup-media:latest
