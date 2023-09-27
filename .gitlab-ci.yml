@@ -3,7 +3,7 @@ stages:
   - build
 
 workflow:
-  image: docker:latest
+  image: registry.gitlab.com/renaissance7/infrastructure/docker
   stage: build
   variables:
     TAG: $CI_REGISTRY/renaissance7/backup/backup-media:latest
