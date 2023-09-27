@@ -5,7 +5,7 @@ stages:
 workflow:
   stage: build
   environment:
-    - TAG: $CI_REGISTRY/renaissance7/backup/backup-media:latest
+    TAG: $CI_REGISTRY/renaissance7/backup/backup-media:latest
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
       when: always
