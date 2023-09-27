@@ -1,0 +1,15 @@
+---
+stages:
+  - build
+
+workflow:
+  stage: build
+  environtment:
+    - TAG: $CI_REGISTRY/renaissance7/backup/backup-media:latest
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: always
+  script:
+    - docker build --file="$(shell pwd)/.docker/aws-cli/Dockerfile" --tag $TAG .
+    - docker login -u $CI_DEPLOY_USER -p $CI_DEPLOY_PASSWORD $CI_REGISTRY
+    - docker push $TAG
