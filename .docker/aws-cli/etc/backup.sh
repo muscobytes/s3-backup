@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-# set -x
+set -x
 
 BACKUP_DIR=/backup
 BACKUP_PATH=${BACKUP_DIR}/${PROJECT_NAME}_$(date +%Y%m%d_%H%I%S).tar.gz
