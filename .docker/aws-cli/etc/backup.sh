@@ -2,7 +2,7 @@
 # set -x
 
 BACKUP_DIR=/backup
-BACKUP_PATH=${BACKUP_DIR}/${FILENAME}
+BACKUP_PATH=${BACKUP_DIR}/${PROJECT_NAME}_$(date +%Y%m%d_%H%I%S).tar.gz
 
 mkdir -p ${BACKUP_DIR} \
     && tar -czvf ${BACKUP_PATH} ${MEDIA_DIR} \

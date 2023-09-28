@@ -26,7 +26,6 @@ push:
 .PHONY: build
 build:
 	docker build --file="$(shell pwd)/.docker/aws-cli/Dockerfile" --tag $(TAG) --progress=plain .
-	make push
 
 .PHONY: shell
 shell:
