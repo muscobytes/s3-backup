@@ -5,7 +5,7 @@ BACKUP_DIR=/backup
 BACKUP_PATH=${BACKUP_DIR}/${PROJECT_NAME}_$(date +%Y%m%d_%H%I%S).tar.gz
 
 mkdir -p ${BACKUP_DIR} \
-    && tar -czf --totals ${BACKUP_PATH} /media \
+    && tar -czf --totals --checkpoint=1000 ${BACKUP_PATH} /media \
     && aws \
         --endpoint-url=https://storage.yandexcloud.net \
         --region=ru-central1 \
