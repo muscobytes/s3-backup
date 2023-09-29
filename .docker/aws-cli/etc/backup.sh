@@ -9,4 +9,4 @@ mkdir -p ${BACKUP_DIR} \
     && aws \
         --endpoint-url=https://storage.yandexcloud.net \
         --region=ru-central1 \
-        s3 cp ${BACKUP_PATH} s3://renaissance-backups/${PROJECT_NAME}
+        s3 cp ${BACKUP_PATH} s3://renaissance-backups/${PROJECT_NAME}/
