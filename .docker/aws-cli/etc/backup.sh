@@ -5,7 +5,7 @@ BACKUP_DIR=/backup
 BACKUP_PATH=/${PROJECT_NAME}_$(date +%Y%m%d_%H%I%S).tar.gz
 
 mkdir -p ${BACKUP_DIR} \
-    && mysqldump -u ${MYSQL_USER} -p ${MYSQL_PASSWORD} —-databases ${MYSQL_DATABASE}> ${BACKUP_DIR}/sql/${MYSQL_DATABASE}.sql \
+    && mysqldump -h ${MYSQL_HOSTNAME} -u ${MYSQL_USER} -p ${MYSQL_PASSWORD} —-databases ${MYSQL_DATABASE}> ${BACKUP_DIR}/sql/${MYSQL_DATABASE}.sql \
     && tar -czf --totals --checkpoint=5000 ${BACKUP_PATH} ${BACKUP_DIR}/media \
     && aws \
         --endpoint-url=https://storage.yandexcloud.net \
