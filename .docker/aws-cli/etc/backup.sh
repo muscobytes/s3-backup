@@ -9,7 +9,7 @@ mkdir -p ${BACKUP_DIR}/sql \
         --port=${MYSQL_PORT} \
         --user=${MYSQL_USER} \
         --password=${MYSQL_PASSWORD} \
-        --databases=${MYSQL_DATABASE} \
+        --databases ${MYSQL_DATABASE} \
         > ${BACKUP_DIR}/sql/${MYSQL_DATABASE}.sql \
     && tar -czf --totals --checkpoint=5000 ${BACKUP_PATH} ${BACKUP_DIR} \
     && aws \
