@@ -7,6 +7,4 @@ RUN yum -y install tar xz gzip mysql nc iputils \
     && rm -rf /var/cache \
     && chmod +x /backup.sh
 
-ENTRYPOINT [ "/backup.sh" ]
-
 WORKDIR /opt
