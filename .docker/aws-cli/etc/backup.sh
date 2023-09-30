@@ -12,7 +12,7 @@ mkdir -p ${BACKUP_DIR}/sql \
         --databases ${MYSQL_DATABASE} \
         --no-tablespaces \
         > ${BACKUP_DIR}/sql/${MYSQL_DATABASE}.sql \
-    && tar -czf --totals --checkpoint=5000 ${BACKUP_PATH} ${BACKUP_DIR} \
+    && tar czf --totals --checkpoint=5000 ${BACKUP_PATH} ${BACKUP_DIR} \
     && aws \
         --endpoint-url=https://storage.yandexcloud.net \
         --region=ru-central1 \
