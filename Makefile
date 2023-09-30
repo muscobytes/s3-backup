@@ -8,7 +8,7 @@ ifneq (,$(wildcard $(ENV_PATH)))
     export
 endif
 
-TAG := ${DOCKER_REGISTRY_URL}/${GITLAB_PROJECT_PATH}/${GITLAB_PROJECT_NAME}/backup-media:latest
+TAG := ${CI_REGISTRY}/renaissance7/infrastructure/backup-media:latest
 
 .PHONY: help
 help:
