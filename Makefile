@@ -31,8 +31,9 @@ build:
 shell:
 	docker run --rm -ti --entrypoint=/bin/bash $(TAG)
 
-.PHONY: download-build-images
-download-build-images:
+BUILD_IMAGE_TAG=registry.gitlab.com/renaissance7/s3-backup/docker-compose:latest
+.PHONY: build-images
+build-images:
 	docker pull docker/compose:latest
-	docker tag docker/compose:latest registry.gitlab.com/renaissance7/s3-backup:latest
-	docker push registry.gitlab.com/renaissance7/s3-backup:latest
+	docker tag docker/compose:latest $(BUILD_IMAGE_TAG)
+	docker push $(BUILD_IMAGE_TAG)
