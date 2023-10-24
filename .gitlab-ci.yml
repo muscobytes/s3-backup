@@ -3,12 +3,12 @@ stages:
   - build
 
 workflow:
-  image: registry.gitlab.com/renaissance7/infrastructure/docker-compose:latest
+  image: registry.gitlab.com/renaissance7/s3-backup/docker-compose:latest
   services:
     - docker:dind
   stage: build
   variables:
-    TAG: $CI_REGISTRY/renaissance7/infrastructure/backup-media:latest
+    TAG: $CI_REGISTRY/renaissance7/s3-backup/backup-media:latest
   rules:
     - if: '$CI_COMMIT_BRANCH == "master"'
       when: always

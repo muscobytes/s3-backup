@@ -30,3 +30,9 @@ build:
 .PHONY: shell
 shell:
 	docker run --rm -ti --entrypoint=/bin/bash $(TAG)
+
+.PHONY: download-build-images
+download-build-images:
+	docker pull docker/compose:latest
+	docker tag docker/compose:latest registry.gitlab.com/renaissance7/s3-backup:latest
+	docker push registry.gitlab.com/renaissance7/s3-backup:latest
