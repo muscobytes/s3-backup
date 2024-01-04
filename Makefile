@@ -29,7 +29,7 @@ build:
 
 .PHONY: shell
 shell:
-	docker run --rm -ti --entrypoint=/bin/bash $(TAG)
+	docker run --rm -ti -v "$(shell pwd)/.docker/aws-cli/etc/backup.sh:/backup.sh" --entrypoint=/bin/bash $(TAG)
 
 BUILD_IMAGE_TAG=registry.gitlab.com/renaissance7/s3-backup/docker-compose:latest
 .PHONY: build-images
