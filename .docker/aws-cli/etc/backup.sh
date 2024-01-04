@@ -57,13 +57,10 @@ if [ -n "${POSTGRES_HOST}" ] \
     && [ -n "${POSTGRES_DATABASE}" ]
 then
     echo "PostreSQL backup enabled"
-    mkdir -p ${TARGET_DIR}/postgres \
-    && pg_dump --host= ${POSTGRES_HOST} \
-        --port=${POSTGRES_PORT} \
-        --username=${POSTGRES_USER} \
-        --password=${POSTGRES_PASSWORD} \
-        --dbname=${POSTGRES_DATABASE} \
-        --verbose \
+    echo "${POSTGRES_HOST}:${POSTGRES_PORT}:${POSTGRES_DATABASE}:${POSTGRES_USER}:${POSTGRES_PASSWORD}" > ~/.pgpass \
+    && chmod 0600 ~/.pgpass \
+    && mkdir -p ${TARGET_DIR}/postgres \
+    && pg_dump --verbose \
         --file=${TARGET_DIR}/postgres/${POSTGRES_DATABASE}.dump
 else
     echo "PostgreSQL backup disabled"
