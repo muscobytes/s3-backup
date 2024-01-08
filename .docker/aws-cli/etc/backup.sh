@@ -2,7 +2,8 @@
 set -x
 
 TARGET_DIR=/backup
-BACKUP_PATH=/opt/${PROJECT_NAME}_$(date +%Y%m%d_%H%I%S).tar.gz
+BACKUP_FILENAME=${BACKUP_FILENAME:-${PROJECT_NAME}_$(date +%Y%m%d_%H%I%S).tar.gz}
+BACKUP_PATH=/opt/${BACKUP_FILENAME}
 
 MYSQL_PORT=${MYSQL_PORT:-3306}
 MYSQL_DUMP_DIR=${TARGET_DIR}/mysql
@@ -54,12 +55,12 @@ fi
 # PostgreSQL backup
 ################################################################################
 if [ -n "${POSTGRES_HOST}" ] \
-    && [ -n "${POSTGRES_PASSWORD}" ] \
+    && [ -n "${PGPASSWORD}" ] \
     && [ -n "${POSTGRES_DATABASE}" ]
 then
     echo "PostreSQL backup enabled" \
     && mkdir --parent ${POSTGRES_DUMP_DIR} \
-    && PGPASSWORD="${POSTGRES_PASSWORD}" pg_dump \
+    && pg_dump \
         --host=${POSTGRES_HOST} \
         --port=${POSTGRES_PORT} \
         --username=${POSTGRES_USER} \
