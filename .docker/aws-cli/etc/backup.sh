@@ -73,8 +73,9 @@ fi
 ################################################################################
 if [ -d "${TARGET_DIR}" ]
 then
-    echo " > Creating backup"
-    tar \
+    echo " > Creating backup" \
+    && ls -la ${TARGET_DIR} \
+    && tar \
         --totals \
         --checkpoint=${TAR_CHECKPOINT} \
         -czf ${BACKUP_PATH} ${TARGET_DIR} \
