@@ -14,7 +14,7 @@ POSTGRES_DUMP_DIR=${TARGET_DIR}/postgres
 TAR_CHECKPOINT=${TAR_CHECKPOINT:-5000}
 
 S3_ENDPOINT_URL=${S3_ENDPOINT_URL:-https://storage.yandexcloud.net}
-S3_PATH=${S3_PATH:-renaissance_backup}
+S3_PATH=${S3_PATH:-${PROJECT_NAME}}
 S3_REGION=${S3_REGION:-ru-central1}
 
 [ -z "${PROJECT_NAME}" ] \
@@ -25,6 +25,9 @@ S3_REGION=${S3_REGION:-ru-central1}
 
 [ -z "${AWS_ACCESS_KEY_ID}" ] \
     && echo "AWS_ACCESS_KEY_ID is not set" && exit 102
+
+[ -z "${S3_BUCKET}" ] \
+    && echo "S3_BUCKET is not set" && exit 103
 
 ################################################################################
 # MySQL backup
@@ -82,5 +85,5 @@ then
     && aws \
         --endpoint-url=${S3_ENDPOINT_URL} \
         --region=${S3_REGION} \
-        s3 cp ${BACKUP_PATH} s3://${S3_PATH}/
+        s3 cp ${BACKUP_PATH} s3://${S3_BUCKET}/${S3_PATH}/
 fi
