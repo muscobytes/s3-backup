@@ -90,5 +90,5 @@ if [ -d "${TARGET_DIR}" ]; then
     aws \
         --endpoint-url="${S3_ENDPOINT_URL}" \
         --region="${S3_REGION}" \
-        s3 cp ${BACKUP_PATH} s3://${S3_BUCKET}/${S3_PATH}/
+        s3 cp "${BACKUP_PATH}" "s3://${S3_BUCKET}/${S3_PATH}/"
 fi
