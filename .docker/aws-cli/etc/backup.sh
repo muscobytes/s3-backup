@@ -2,24 +2,25 @@
 set -x
 
 TARGET_DIR=/backup
-BACKUP_FILENAME=${BACKUP_FILENAME:-${PROJECT_NAME}_$(date +%Y%m%d_%H%I%S).tar.gz}
-BACKUP_PATH=/opt/${BACKUP_FILENAME}
+BACKUP_FILENAME=${BACKUP_FILENAME:-${PREFIX}_$(date +%Y%m%d_%H%I%S).tar.gz}
+BACKUP_PATH=${BACKUP_PATH:-/opt/${BACKUP_FILENAME}}
 
 MYSQL_PORT=${MYSQL_PORT:-3306}
 MYSQL_DUMP_DIR=${TARGET_DIR}/mysql
 
-POSTGRES_USER=${POSTGRES_USER:-postgres}
-POSTGRES_PORT=${POSTGRES_PORT:-5432}
-POSTGRES_DUMP_DIR=${TARGET_DIR}/postgres
+POSTGRE_USER=${POSTGRE_USER:-POSTGRE}
+POSTGRE_PORT=${POSTGRE_PORT:-5432}
+POSTGRE_DUMP_DIR=${TARGET_DIR}/POSTGRE
 
 TAR_CHECKPOINT=${TAR_CHECKPOINT:-5000}
 
 S3_ENDPOINT_URL=${S3_ENDPOINT_URL:-https://storage.yandexcloud.net}
-S3_PATH=${S3_PATH:-${PROJECT_NAME}}
+S3_PATH=${S3_PATH:-${PREFIX}}
 S3_REGION=${S3_REGION:-ru-central1}
 
-[ -z "${PROJECT_NAME}" ] \
-    && echo "PROJECT_NAME is not set" && exit 100
+if [ -z "${PREFIX}" ]; then
+    PREFIX=""
+fi
 
 [ -z "${AWS_SECRET_ACCESS_KEY}" ] \
     && echo "AWS_SECRET_ACCESS_KEY is not set" && exit 101
@@ -40,13 +41,13 @@ if [ -n "${MYSQL_HOST}" ] \
 then
     echo "MySQL backup enabled" \
     && mkdir --parent ${MYSQL_DUMP_DIR} \
-    && mysqldump --host ${MYSQL_HOST} \
-        --port=${MYSQL_PORT} \
-        --user=${MYSQL_USER} \
-        --password=${MYSQL_PASSWORD} \
-        --databases ${MYSQL_DATABASE} \
+    && mysqldump --host "${MYSQL_HOST}" \
+        --port="${MYSQL_PORT}" \
+        --user="${MYSQL_USER}" \
+        --password="${MYSQL_PASSWORD}" \
+        --databases "${MYSQL_DATABASE}" \
         --no-tablespaces \
-        > ${MYSQL_DUMP_DIR}/${MYSQL_DATABASE}.sql
+        > "${MYSQL_DUMP_DIR}/${MYSQL_DATABASE}.sql"
 else
     echo "MySQL backup disabled"
 fi
@@ -54,37 +55,40 @@ fi
 ################################################################################
 # PostgreSQL backup
 ################################################################################
-if [ -n "${POSTGRES_HOST}" ] \
+if [ -n "${POSTGRE_HOST}" ] \
     && [ -n "${PGPASSWORD}" ] \
-    && [ -n "${POSTGRES_DATABASE}" ]
+    && [ -n "${POSTGRE_DATABASE}" ]
 then
-    echo "PostreSQL backup enabled" \
-    && mkdir --parent ${POSTGRES_DUMP_DIR} \
+    echo "PostgreSQL backup enabled" \
+    && mkdir --parent ${POSTGRE_DUMP_DIR} \
     && pg_dump \
-        --host=${POSTGRES_HOST} \
-        --port=${POSTGRES_PORT} \
-        --username=${POSTGRES_USER} \
+        --host="${POSTGRE_HOST}" \
+        --port="${POSTGRE_PORT}" \
+        --username="${POSTGRE_USER}" \
         --format=plain \
         --verbose \
-        --file=${POSTGRES_DUMP_DIR}/${POSTGRES_DATABASE}.dump \
-        ${POSTGRES_DATABASE}
+        --file="${POSTGRE_DUMP_DIR}/${POSTGRE_DATABASE}.dump" \
+        "${POSTGRE_DATABASE}"
 else
     echo "PostgreSQL backup disabled"
 fi
 
 ################################################################################
-# Archieve and upload to S3
+# Optionally archive target folder and upload archive to S3
 ################################################################################
-if [ -d "${TARGET_DIR}" ]
-then
-    echo " > Creating backup" \
-    && ls -la ${TARGET_DIR} \
-    && tar \
-        --totals \
-        --checkpoint=${TAR_CHECKPOINT} \
-        -czf ${BACKUP_PATH} ${TARGET_DIR} \
-    && aws \
-        --endpoint-url=${S3_ENDPOINT_URL} \
-        --region=${S3_REGION} \
+if [ -d "${TARGET_DIR}" ]; then
+    ls -la "${TARGET_DIR}"
+    if [ -z "${DO_NOT_COMPRESS}" ]; then
+        echo " > Creating tar archive" \
+        && ls -la ${TARGET_DIR} \
+        && tar \
+            --totals \
+            --checkpoint="${TAR_CHECKPOINT}" \
+            -czf "${BACKUP_PATH}" "${TARGET_DIR}"
+    fi
+
+    aws \
+        --endpoint-url="${S3_ENDPOINT_URL}" \
+        --region="${S3_REGION}" \
         s3 cp ${BACKUP_PATH} s3://${S3_BUCKET}/${S3_PATH}/
 fi
