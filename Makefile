@@ -1,5 +1,5 @@
 #!/usr/bin/env make
-SHELL = sh -xv
+#SHELL = sh -xv
 
 ENV_PATH := $(shell pwd)/.env
 
@@ -8,7 +8,7 @@ ifneq (,$(wildcard $(ENV_PATH)))
     export
 endif
 
-TAG := ${CI_REGISTRY}/renaissance7/infrastructure/backup-media:latest
+TAG := ${CI_REGISTRY}/${GITHUB_REPOSITORY}/s3-backup:latest
 
 .PHONY: help
 help:
@@ -16,7 +16,7 @@ help:
 
 .PHONY: login
 login:
-	docker login $(DOCKER_REGISTRY_URL)
+	docker login $(CI_REGISTRY)
 
 .PHONY: push
 push:
@@ -30,10 +30,3 @@ build:
 .PHONY: shell
 shell:
 	docker run --rm -ti -v "$(shell pwd)/.docker/aws-cli/etc/backup.sh:/backup.sh" --entrypoint=/bin/bash $(TAG)
-
-BUILD_IMAGE_TAG=registry.gitlab.com/renaissance7/s3-backup/docker-compose:latest
-.PHONY: build-images
-build-images:
-	docker pull docker/compose:latest
-	docker tag docker/compose:latest $(BUILD_IMAGE_TAG)
-	docker push $(BUILD_IMAGE_TAG)
