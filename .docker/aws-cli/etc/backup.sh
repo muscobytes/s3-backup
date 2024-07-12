@@ -10,7 +10,7 @@ DATE_FORMAT=${DATE_FORMAT:-%Y-%m-%d_%H-%M-%S}
 TARGET_DIR=${TARGET_DIR:-/target}
 DATABASE_DUMP_DIR=${TARGET_DIR}/dump
 
-if [ ! -z "${BACKUP_FILENAME_PREFIX}" ]; then
+if [ -n "${BACKUP_FILENAME_PREFIX}" ]; then
   BACKUP_FILENAME_PREFIX=${BACKUP_FILENAME_PREFIX}_
 fi
 
@@ -111,19 +111,19 @@ fi
 ################################################################################
 if [ "${REMOVE_DATABASE_DUMP_FILES}" = 1 ]; then
   if [ -f "${PG_DUMP_FILE_PATH}" ]; then
-    echo "🗑️ Removing ${PG_DUMP_FILE_PATH}"
+    echo " 🗑️ Removing ${PG_DUMP_FILE_PATH}"
     rm -f "${PG_DUMP_FILE_PATH}"
   fi
 
   if [ -f "${MYSQL_DUMP_FILE_PATH}" ]; then
-    echo "🗑️ Removing ${MYSQL_DUMP_FILE_PATH}"
+    echo " 🗑️ Removing ${MYSQL_DUMP_FILE_PATH}"
     rm -f "${MYSQL_DUMP_FILE_PATH}"
   fi
 fi
 
 if [ "${REMOVE_BACKUP_FILE}" = 1 ]; then
   if [ -f "${BACKUP_FILE_PATH}" ]; then
-    echo "🗑️ Removing ${BACKUP_FILE_PATH}"
+    echo " 🗑️ Removing ${BACKUP_FILE_PATH}"
     rm -f "${BACKUP_FILE_PATH}"
   fi
 fi
