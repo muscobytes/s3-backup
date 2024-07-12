@@ -1,4 +1,7 @@
 # S3 Backup
+
+![S3 backup](logo.png)
+
 This image can create MySQL/PostgreSQL dumps, compress mounted dir and dumps into the tar archive and upload it to S3-compatible bucket.
 
 ## Cases
