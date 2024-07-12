@@ -18,12 +18,13 @@ _Optional_, default value: `%Y-%m-%d_%H-%M-%S`.
 _Optional_, default value: `/target`.
 
 ### S3 bucket settings
-- `AWS_SECRET_ACCESS_KEY` — **Required.**
 - `AWS_ACCESS_KEY_ID` — **Required.**
+- `AWS_SECRET_ACCESS_KEY` — **Required.**
 - `S3_BUCKET` — **Required.**
 - `S3_ENDPOINT_URL` — _Optional_, Default value: `https://storage.yandexcloud.net`
 - `S3_REGION` — _Optional_, Default value: `ru-central1`
-- `S3_PATH` — _Optional_, Default value: `/backup`
+- `S3_PATH` — Do not set starting and trailing slashes to the path.\
+_Optional_, Default value: `backup`
 
 ### MySQL dump options
 Variables that marked as `required` are required only if MySQL dump creation is necessary and not required for running this script.
