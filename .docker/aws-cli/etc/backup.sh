@@ -60,7 +60,9 @@ then
         --no-tablespaces \
         --databases \
         "${MYSQL_DATABASE}" \
-        > "${MYSQL_DUMP_FILE_PATH}"
+        > "${MYSQL_DUMP_FILE_PATH}" \
+    && export MYSQL_DUMP_EXECUTES_SUCCESSFULLY=1
+    [ -z "${MYSQL_DUMP_EXECUTES_SUCCESSFULLY}" ] && echo " ⛔ Error while creating MySQL dump." && exit 201
 else
     echo " ❣️ MySQL backup disabled"
 fi
@@ -81,7 +83,9 @@ then
         --format=plain \
         --verbose \
         --file="${PG_DUMP_FILE_PATH}" \
-        "${POSTGRE_DATABASE}"
+        "${POSTGRE_DATABASE}" \
+    && export POSTGRE_DUMP_EXECUTES_SUCCESSFULLY=1
+    [ -z "${POSTGRE_DUMP_EXECUTES_SUCCESSFULLY}" ] && echo " ⛔ Error while creating PostgreSQL dump." && exit 301
 else
     echo " ❣️ PostgreSQL backup disabled"
 fi
