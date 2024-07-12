@@ -9,4 +9,4 @@ RUN chmod +x /backup.sh \
     && apk update \
     && apk add tar xz gzip mysql-client netcat-openbsd iputils postgresql aws-cli
 
-CMD ["crond"]
+CMD ["crond", "-f"]
