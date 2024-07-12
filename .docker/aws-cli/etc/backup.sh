@@ -74,7 +74,7 @@ else
 fi
 
 ################################################################################
-# Optionally archive target folder and upload archive to S3
+# Optionally archive target folder
 ################################################################################
 if [ -d "${TARGET_DIR}" ]; then
     ls -la "${TARGET_DIR}"
@@ -87,6 +87,7 @@ if [ -d "${TARGET_DIR}" ]; then
             -czf "${BACKUP_PATH}" "${TARGET_DIR}"
     fi
 
+    # Upload backup archive to S3
     aws \
         --endpoint-url="${S3_ENDPOINT_URL}" \
         --region="${S3_REGION}" \
