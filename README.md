@@ -11,7 +11,7 @@ This image can create MySQL/PostgreSQL dumps, compress mounted dir and dumps int
 - mount folder with tar archive and upload it to s3
 
 ## Setup
-- `PREFIX` — **Required**, using in tar archive filename and S3 path.
+- `BACKUP_FILENAME_PREFIX` — **Required**, using in tar archive filename and S3 path.
 - `DATE_FORMAT` — Using in filenames of archive and database dumps.\
 _Optional_, default value: `%Y-%m-%d_%H-%M-%S`.
 - `TARGET_DIR` — Path to target directory that will be archived.\

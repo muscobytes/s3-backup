@@ -45,8 +45,9 @@ then
         --port="${MYSQL_PORT}" \
         --user="${MYSQL_USER}" \
         --password="${MYSQL_PASSWORD}" \
-        --databases="${MYSQL_DATABASE}" \
         --no-tablespaces \
+        --databases \
+        "${MYSQL_DATABASE}" \
         > "${DATABASE_DUMP_DIR}/${MYSQL_DATABASE}_$(date +"${DATE_FORMAT}").sql"
 else
     echo "MySQL backup disabled"
