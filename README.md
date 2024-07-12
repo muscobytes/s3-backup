@@ -9,8 +9,10 @@ This image can create MySQL/PostgreSQL dumps, compress mounted dir and dumps int
 
 ## Setup
 - `PREFIX` — **Required**, using in tar archive filename and S3 path.
-- `DATE_FORMAT` — _Optional_, default value: `%Y-%m-%d_%H-%M-%S`. Using in filenames of archive and database dumps. 
-- `TARGET_DIR` — _Optional_, default value: `/target`. Path to target directory that will be archived. 
+- `DATE_FORMAT` — Using in filenames of archive and database dumps.\
+_Optional_, default value: `%Y-%m-%d_%H-%M-%S`.
+- `TARGET_DIR` — Path to target directory that will be archived.\
+_Optional_, default value: `/target`.
 
 ### S3 bucket settings
 - `AWS_SECRET_ACCESS_KEY` — **Required.**
@@ -37,11 +39,13 @@ If the required variables are not set, the MySQL dump creation won't start, and 
 - `POSTGRE_PORT` — _Optional_, Postgre port number, default value: `5432`
 
 ## Tar archive creation
-- `BACKUP_FILENAME` — _Optional_, default value: `${BACKUP_FILENAME_PREFIX}$(date +"${DATE_FORMAT}").tar.gz`. Target tar archive filename that should be uploaded to S3 bucket.
-- `TAR_CHECKPOINT` — _Optional_, using in the ‘--checkpoint’ option that prints an occasional message as tar reads or writes the archive. It prints a message each 5000 records written. This can be changed by setting up a numeric environment variable `TAR_CHECKPOINT`:
+- `BACKUP_FILENAME` —  Target tar archive filename that should be uploaded to S3 bucket.\
+  _Optional_, default value: `${BACKUP_FILENAME_PREFIX}$(date +"${DATE_FORMAT}").tar.gz`.
+- `TAR_CHECKPOINT` — Value used in the option ‘--checkpoint’ that prints an occasional message as tar reads or writes the archive. It prints a message each 5000 records written. This can be changed by setting up a numeric environment variable `TAR_CHECKPOINT`:<br>
 ```shell
 $ tar -c --checkpoint=1000 /var
   tar: Write checkpoint 1000
   tar: Write checkpoint 2000
   tar: Write checkpoint 3000
 ```
+_Optional_, default value: `5000`
