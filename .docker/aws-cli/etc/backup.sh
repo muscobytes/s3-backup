@@ -31,13 +31,13 @@ S3_PATH=${S3_PATH:-backup}
 S3_REGION=${S3_REGION:-ru-central1}
 
 [ -z "${AWS_SECRET_ACCESS_KEY}" ] \
-    && echo "AWS_SECRET_ACCESS_KEY is not set" && exit 101
+    && echo " ⛔ AWS_SECRET_ACCESS_KEY is not set" && exit 101
 
 [ -z "${AWS_ACCESS_KEY_ID}" ] \
-    && echo "AWS_ACCESS_KEY_ID is not set" && exit 102
+    && echo " ⛔ AWS_ACCESS_KEY_ID is not set" && exit 102
 
 [ -z "${S3_BUCKET}" ] \
-    && echo "S3_BUCKET is not set" && exit 103
+    && echo " ⛔ S3_BUCKET is not set" && exit 103
 
 if [ ! -d "${DATABASE_DUMP_DIR}" ]; then
   mkdir --parent "${DATABASE_DUMP_DIR}"
@@ -51,7 +51,7 @@ if [ -n "${MYSQL_HOST}" ] \
     && [ -n "${MYSQL_PASSWORD}" ] \
     && [ -n "${MYSQL_DATABASE}" ]
 then
-    echo "MySQL backup enabled" \
+    echo " 💚 MySQL backup enabled, dumping to ${MYSQL_DUMP_FILE_PATH}" \
     && mysqldump \
         --host="${MYSQL_HOST}" \
         --port="${MYSQL_PORT}" \
@@ -62,7 +62,7 @@ then
         "${MYSQL_DATABASE}" \
         > "${MYSQL_DUMP_FILE_PATH}"
 else
-    echo "MySQL backup disabled"
+    echo " ❣️ MySQL backup disabled"
 fi
 
 ################################################################################
@@ -73,7 +73,7 @@ if [ -n "${POSTGRE_HOST}" ] \
     && [ -n "${PGPASSWORD}" ] \
     && [ -n "${POSTGRE_DATABASE}" ]
 then
-    echo "PostgreSQL backup enabled" \
+    echo " 💚 PostgreSQL backup enabled, dumping to ${PG_DUMP_FILE_PATH}" \
     && pg_dump \
         --host="${POSTGRE_HOST}" \
         --port="${POSTGRE_PORT}" \
@@ -83,7 +83,7 @@ then
         --file="${PG_DUMP_FILE_PATH}" \
         "${POSTGRE_DATABASE}"
 else
-    echo "PostgreSQL backup disabled"
+    echo " ❣️ PostgreSQL backup disabled"
 fi
 
 ################################################################################
@@ -91,7 +91,7 @@ fi
 ################################################################################
 if [ -d "${TARGET_DIR}" ]; then
     if [ "${COMPRESS_TARGET_DIR}" = 1 ]; then
-        echo " > Creating tar archive" \
+        echo " 🗃️ Creating tar archive" \
         && ls -la "${TARGET_DIR}" \
         && tar \
             --totals \
