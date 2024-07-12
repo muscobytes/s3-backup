@@ -1,9 +1,7 @@
 # S3 Backup
-
 This image can create MySQL/PostgreSQL dumps, compress mounted dir and dumps into the tar archive and upload it to S3-compatible bucket.
 
 ## Cases
-
 - make mysql dump, compress and upload to s3 
 - mount folder from side docker volume, create mysql dump, compress target dir and upload to s3
 - create mysql & postgre dump, compress, and upload to s3
