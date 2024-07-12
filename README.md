@@ -1,13 +1,20 @@
 # S3 Backup
 
-This image can create MySQL/PostgreSQL dumps, archive mounted dir and dumps to tar and upload it to S3-compatible bucket.
+This image can create MySQL/PostgreSQL dumps, compress mounted dir and dumps into the tar archive and upload it to S3-compatible bucket.
+
+## Cases
+
+- make mysql dump, compress and upload to s3 
+- mount folder from side docker volume, create mysql dump, compress target dir and upload to s3
+- create mysql & postgre dump, compress, and upload to s3
+- mount folder with tar archive and upload it to s3
 
 ## Setup
-
 - `PREFIX` — **Required**, using in tar archive filename and S3 path.
+- `DATE_FORMAT` — _Optional_, default value: `%Y-%m-%d_%H-%M-%S`. Using in filenames of archive and database dumps. 
+- `TARGET_DIR` — _Optional_, default value: `/target`. Path to target directory that will be archived. 
 
 ### S3 bucket settings
-
 - `AWS_SECRET_ACCESS_KEY` — **Required.**
 - `AWS_ACCESS_KEY_ID` — **Required.**
 - `S3_BUCKET` — **Required.**
@@ -16,24 +23,24 @@ This image can create MySQL/PostgreSQL dumps, archive mounted dir and dumps to t
 - `S3_PATH` — _Optional_, Default value: `${PROJECT_NAME}`
 
 ### MySQL dump options
+Variables that marked as `required` are required only if MySQL dump creation is necessary and not required for running this script.
 
-If required variables are not set MySQL dump creation won't be started with the following notice: `"MySQL backup disabled"`.
-- `MYSQL_HOST` — **Required.**
-- `MYSQL_USER` — **Required.**
-- `MYSQL_PASSWORD` — **Required.**
-- `MYSQL_DATABASE` — **Required.**
-- `MYSQL_PORT` — _Optional._, MySQL port number, default value: `3306`
+If the required variables are not set, the MySQL dump creation won't start, and the following notice will be displayed: `"MySQL backup disabled"`.
+- `MYSQL_HOST` — **Required for creating MySQL dump.**
+- `MYSQL_USER` — **Required for creating MySQL dump.**
+- `MYSQL_PASSWORD` — **Required for creating MySQL dump.**
+- `MYSQL_DATABASE` — **Required for creating MySQL dump.**
+- `MYSQL_PORT` — _Optional_, MySQL port number, default value: `3306`
 
 ### PostgreSQL dump options
-
-- `PGPASSWORD` — **Required.**
-- `POSTGRE_USER` — _Optional_, PostgreSQL username, default value: `postgres`
-- `POSTGRE_PORT` — _Optional_, PostgreSQL port number, default value: `5432`
+- `PGPASSWORD` — **Required for creating Postgre dump**.
+- `POSTGRE_DATABASE` — **Required for creating Postgre dump**.
+- `POSTGRE_USER` — _Optional_, Postgre username, default value: `postgres`
+- `POSTGRE_PORT` — _Optional_, Postgre port number, default value: `5432`
 
 ## Tar archive creation
-
-- `BACKUP_FILENAME` — _Optional_, tar archive filename, default value: `${PREFIX}_$(date +%Y%m%d_%H%I%S).tar.gz`
-- `TAR_CHECKPOINT` — _Optional_, using in the ‘--checkpoint’ option that prints an occasional message as tar reads or writes the archive. It prints a message each 5000 records written. This can be changed by setting up a numeric environment variable `TAR_CHECKPOINT`:<br />
+- `BACKUP_FILENAME` — _Optional_, default value: `${BACKUP_FILENAME_PREFIX}$(date +"${DATE_FORMAT}").tar.gz`. Target tar archive filename that should be uploaded to S3 bucket.
+- `TAR_CHECKPOINT` — _Optional_, using in the ‘--checkpoint’ option that prints an occasional message as tar reads or writes the archive. It prints a message each 5000 records written. This can be changed by setting up a numeric environment variable `TAR_CHECKPOINT`:
 ```shell
 $ tar -c --checkpoint=1000 /var
   tar: Write checkpoint 1000
