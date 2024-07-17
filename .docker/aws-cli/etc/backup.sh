@@ -127,7 +127,7 @@ if [ "${REMOVE_DATABASE_DUMP_FILES}" = 1 ]; then
   fi
 fi
 
-if [ "${REMOVE_BACKUP_FILE}" = 1 ]; then
+if [ "${REMOVE_BACKUP_FILE}" = 1 ] && [ -n "${UPLOAD_TO_S3_FINISHED_SUCCESSFULLY}" ]; then
   if [ -f "${BACKUP_FILE_PATH}" ]; then
     echo " 🗑️ Removing ${BACKUP_FILE_PATH}"
     rm -f "${BACKUP_FILE_PATH}"
