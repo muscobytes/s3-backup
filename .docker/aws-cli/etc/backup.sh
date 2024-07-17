@@ -107,7 +107,9 @@ if [ -d "${TARGET_DIR}" ]; then
     aws \
         --endpoint-url="${S3_ENDPOINT_URL}" \
         --region="${S3_REGION}" \
-        s3 cp "${BACKUP_FILE_PATH}" "s3://${S3_BUCKET}/${S3_PATH}/"
+        s3 cp "${BACKUP_FILE_PATH}" "s3://${S3_BUCKET}/${S3_PATH}/" \
+    && export UPLOAD_TO_S3_FINISHED_SUCCESSFULLY=1
+    [ -z "${UPLOAD_TO_S3_FINISHED_SUCCESSFULLY}" ] && echo "  ⛔ Error while uploading file to S3" && exit 401
 fi
 
 ################################################################################
