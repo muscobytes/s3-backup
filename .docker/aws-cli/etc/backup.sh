@@ -14,8 +14,10 @@ if [ -n "${BACKUP_FILENAME_PREFIX}" ]; then
   BACKUP_FILENAME_PREFIX=${BACKUP_FILENAME_PREFIX}_
 fi
 
+BACKUP_DIR=${BACKUP_DIR:-/backup}
+
 BACKUP_FILENAME=${BACKUP_FILENAME:-${BACKUP_FILENAME_PREFIX}$(date +"${DATE_FORMAT}").tar.gz}
-BACKUP_FILE_PATH=${BACKUP_FILE_PATH:-/${BACKUP_FILENAME}}
+BACKUP_FILE_PATH=${BACKUP_FILE_PATH:-${BACKUP_DIR}/${BACKUP_FILENAME}}
 
 MYSQL_PORT=${MYSQL_PORT:-3306}
 MYSQL_DUMP_FILE_PATH=${DATABASE_DUMP_DIR}/${MYSQL_DATABASE}_$(date +"${DATE_FORMAT}").sql
@@ -39,8 +41,12 @@ S3_REGION=${S3_REGION:-ru-central1}
 [ -z "${S3_BUCKET}" ] \
     && echo " ⛔ S3_BUCKET is not set" && exit 103
 
+if [ ! -d "${BACKUP_DIR}" ]; then
+    mkdir --parent "${BACKUP_DIR}"
+fi
+
 if [ ! -d "${DATABASE_DUMP_DIR}" ]; then
-  mkdir --parent "${DATABASE_DUMP_DIR}"
+    mkdir --parent "${DATABASE_DUMP_DIR}"
 fi
 
 ################################################################################
@@ -107,7 +113,7 @@ if [ -d "${TARGET_DIR}" ]; then
     aws \
         --endpoint-url="${S3_ENDPOINT_URL}" \
         --region="${S3_REGION}" \
-        s3 cp "${BACKUP_FILE_PATH}" "s3://${S3_BUCKET}/${S3_PATH}/" \
+        s3 cp "${BACKUP_FILE_PATH}" "s3://${S3_BUCKET}/${S3_PATH}/" --recursive \
     && export UPLOAD_TO_S3_FINISHED_SUCCESSFULLY=1
     [ -z "${UPLOAD_TO_S3_FINISHED_SUCCESSFULLY}" ] && echo "  ⛔ Error while uploading file to S3" && exit 203
 fi
