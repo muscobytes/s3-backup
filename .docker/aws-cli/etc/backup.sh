@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-set -x
+#set -x
 
 COMPRESS_TARGET_DIR=${COMPRESS_TARGET_DIR:-1}
 REMOVE_DATABASE_DUMP_FILES=${REMOVE_DATABASE_DUMP_FILES:-1}
@@ -112,14 +112,16 @@ if [ -d "${TARGET_DIR}" ]; then
 
     if [ "${UPLOAD_TARGET_DIR}" = 1 ]; then
         UPLOAD_DIR=${TARGET_DIR}
+        RECURSIVE=
     else
         UPLOAD_DIR=${BACKUP_FILE_PATH}
+        RECURSIVE=--recursive
     fi
     # Upload backup archive to S3
     aws \
         --endpoint-url="${S3_ENDPOINT_URL}" \
         --region="${S3_REGION}" \
-        s3 cp "${UPLOAD_DIR}" "s3://${S3_BUCKET}/${S3_PATH}/" --recursive \
+        s3 cp "${UPLOAD_DIR}" "s3://${S3_BUCKET}/${S3_PATH}/" ${RECURSIVE} \
     && export UPLOAD_TO_S3_FINISHED_SUCCESSFULLY=1
     [ -z "${UPLOAD_TO_S3_FINISHED_SUCCESSFULLY}" ] && echo "  ⛔ Error while uploading file to S3" && exit 203
 fi
