@@ -27,8 +27,6 @@ POSTGRE_USER=${POSTGRE_USER:-POSTGRE}
 POSTGRE_PORT=${POSTGRE_PORT:-5432}
 PG_DUMP_FILE_PATH=${DATABASE_DUMP_DIR}/${POSTGRE_DATABASE}_$(date +"${DATE_FORMAT}").dump
 
-TAR_CHECKPOINT=${TAR_CHECKPOINT:-5000}
-
 S3_ENDPOINT_URL=${S3_ENDPOINT_URL:-https://storage.yandexcloud.net}
 S3_PATH=${S3_PATH:-backup}
 S3_REGION=${S3_REGION:-ru-central1}
@@ -97,10 +95,10 @@ else
     echo " ❣️ PostgreSQL backup disabled"
 fi
 
-################################################################################
-# Optionally archive target folder
-################################################################################
 if [ -d "${TARGET_DIR}" ]; then
+    ################################################################################
+    # Optionally archive target folder
+    ################################################################################
     if [ "${COMPRESS_TARGET_DIR}" = 1 ]; then
         echo " 🗃️ Creating tar archive" \
         && ls -la "${TARGET_DIR}" \
@@ -109,6 +107,9 @@ if [ -d "${TARGET_DIR}" ]; then
             -cvzf "${BACKUP_FILE_PATH}" "${TARGET_DIR}"
     fi
 
+    ################################################################################
+    # Upload target dir or backup archive to S3
+    ################################################################################
     if [ "${UPLOAD_TARGET_DIR}" = 1 ]; then
         UPLOAD_DIR=${TARGET_DIR}
         RECURSIVE=--recursive
@@ -117,7 +118,7 @@ if [ -d "${TARGET_DIR}" ]; then
         UPLOAD_DIR=${BACKUP_FILE_PATH}
         RECURSIVE=
     fi
-    # Upload backup archive to S3
+
     aws \
         --endpoint-url="${S3_ENDPOINT_URL}" \
         --region="${S3_REGION}" \
