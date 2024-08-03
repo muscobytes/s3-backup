@@ -3,10 +3,11 @@ FROM alpine:3.20
 WORKDIR /
 
 COPY .docker/aws-cli/etc/backup.sh /backup.sh
+COPY .docker/aws-cli/etc/entrypoint.sh /entrypoint.sh
 
 RUN chmod +x /backup.sh \
-    && ln -s /backup.sh /etc/periodic/monthly/ \
+    && chmod +x /entrypoint.sh \
     && apk update \
     && apk add tar xz gzip mysql-client netcat-openbsd iputils postgresql aws-cli
 
-CMD ["crond", "-f"]
+CMD ["/entrypoint.sh"]
