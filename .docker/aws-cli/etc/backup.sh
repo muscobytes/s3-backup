@@ -106,8 +106,7 @@ if [ -d "${TARGET_DIR}" ]; then
         && ls -la "${TARGET_DIR}" \
         && tar \
             --totals \
-            --checkpoint="${TAR_CHECKPOINT}" \
-            -czf "${BACKUP_FILE_PATH}" "${TARGET_DIR}"
+            -cvzf "${BACKUP_FILE_PATH}" "${TARGET_DIR}"
     fi
 
     if [ "${UPLOAD_TARGET_DIR}" = 1 ]; then
