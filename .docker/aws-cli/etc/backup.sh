@@ -111,10 +111,11 @@ if [ -d "${TARGET_DIR}" ]; then
 
     if [ "${UPLOAD_TARGET_DIR}" = 1 ]; then
         UPLOAD_DIR=${TARGET_DIR}
-        RECURSIVE=
+        RECURSIVE=--recursive
+
     else
         UPLOAD_DIR=${BACKUP_FILE_PATH}
-        RECURSIVE=--recursive
+        RECURSIVE=
     fi
     # Upload backup archive to S3
     aws \
