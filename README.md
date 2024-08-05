@@ -1,4 +1,4 @@
-# S3 Backup
+# Renaissance S3 Backup
 
 ![S3 backup](logo.png)
 
@@ -22,8 +22,8 @@ docker run --rm -ti \
   -e S3_BUCKET=my-bucket-name \
   -e S3_PATH=path \
   -e COMPRESS_TARGET_DIR=0 \
-  ghcr.io/muscobytes/s3-backup:latest \
-  /backup.sh
+  --entrypoint /backup.sh \
+  ghcr.io/muscobytes/s3-backup:latest
 ```
 
 - make mysql dump, compress and upload to s3 
