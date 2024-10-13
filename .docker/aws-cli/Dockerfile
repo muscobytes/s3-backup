@@ -8,6 +8,6 @@ COPY .docker/aws-cli/etc/entrypoint.sh /entrypoint.sh
 RUN chmod +x /backup.sh \
     && chmod +x /entrypoint.sh \
     && apk update \
-    && apk add tar xz gzip mysql-client netcat-openbsd iputils postgresql aws-cli
+    && apk add tar xz gzip mysql-client mariadb-connector-c netcat-openbsd iputils postgresql aws-cli
 
 CMD ["/entrypoint.sh"]
